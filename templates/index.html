@@ -35,11 +35,12 @@
 </head>
 
 <body>
-  <input type="file" id="input">
+    <form>
+      Video: <input type="file" id="inputvideo"></input>
+      CSV: <input type="file" id="inputcsv"></input>
+    </form>
   <div class="video-container" width="1280px">
     <video width="100%" id="video" controls loop>
-      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-      Your browser does not support HTML5 video.
     </video>
     <div class="overlay-desc" class="row">
       <div id="var1" class="var"><br></div>
@@ -88,11 +89,23 @@
     window.setInterval(displayTime, 100)
   };
 
-  var inputElement = document.getElementById("input");
+  var inputElement = document.getElementById("inputcsv");
   inputElement.addEventListener("change", handleFiles, false);
 
   function handleFiles() {
     reader.readAsText(this.files[0]);
+  }
+
+  var inputNode = document.getElementById('inputvideo')
+  inputNode.addEventListener('change', playSelectedFile, false)
+
+  function playSelectedFile() {
+    var file = this.files[0]
+    var type = file.type
+    var videoNode = document.querySelector('video')
+    var fileURL = URL.createObjectURL(file)
+    console.log(fileURL)
+    videoNode.src = fileURL
   }
 
 </script>
