@@ -1,4 +1,4 @@
-d3.dsv(";", "data.csv", function (d) {
+d3.dsv(";", "file:///C:/Users/kopyt/Documents/CODE/video-data-overlay/data.csv", function (d) {
   return {
     time: +d.time,
     var1: +d.var1,
