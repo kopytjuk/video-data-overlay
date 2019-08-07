@@ -1,0 +1,7 @@
+count:
+  unit: m/s
+  style:
+    - left: 50px
+    - top: 50px
+    - font-family: "Nobile"
+    - font-size: 300px

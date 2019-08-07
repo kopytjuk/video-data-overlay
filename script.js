@@ -75,10 +75,18 @@ $("#startButton").click(function () {
         var txtRes = data_reader.result;
         // Init the "SSV" parser, which splits data on semi-colons
         var parser = d3.dsvFormat(';')
+        // data = parser.parse(txtRes, function (d) {
+        //     mapping = {time: +d.time}
+        //     for (var key in config) {
+        //         mapping[key] = +d[key]
+        //     }
+        //     return mapping
+        // })
+
         data = parser.parse(txtRes, function (d) {
             mapping = {time: +d.time}
             for (var key in config) {
-                mapping[key] = +d[key]
+                mapping[key] = d[key]
             }
             return mapping
         })
@@ -107,7 +115,8 @@ $("#startButton").click(function () {
         for (var key in config) {
             //console.log(key)
             //console.log(window.data[key])
-            $("#" + key).html("" + Number(window.data[""+key][idx]).toFixed(2));
+            //$("#" + key).html("" + Number(window.data[""+key][idx]).toFixed(2));
+            $("#" + key).html("" + window.data[""+key][idx]);
         }
       }
   
