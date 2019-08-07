@@ -29,7 +29,54 @@
             </a>
         </nav>
 
-        <h1>Set up</h1>
+
+        <div class="container" id="explanation-area">
+            <div class="row">
+                <div class="col-4">
+                    <h3>1. Select video</h3>
+                    Select a video file from your disk. All your data stays on your computer!
+                </div>
+                <div class="col-4">
+                    <h3>2. Select data</h3>
+                    CSV table should include minimum 2 columns, the first should be <code>time</code>. Table elements
+                    should be
+                    separated with "<code>;</code>":
+                        
+                            <pre class="bg-light border rounded m-2 p-2"><code># data.csv
+
+time; var1; var2
+0; 0; 1
+0.1; 0.099833417; 0.995004165
+0.2; 0.198669331; 0.980066578
+0.3; 0.295520207; 0.955336489
+0.4; 0.389418342; 0.921060994</code></pre>
+
+                </div>
+                <div class="col-4">
+                    <h3>3. Select configuration</h3>
+                    Configuration is done via yaml files. Each top level element is a column in the csv file:
+                    
+<pre class="bg-light border rounded m-2 p-2"><code># config,yaml
+
+var1:
+    unit: m/s
+    style:
+        - left: 50px
+        - top: 250px
+        - font-family: "Courier"
+    
+var2:
+    unit: m/s
+    style:
+        - left: 250px
+        - top: 250px
+        - font-family: "Arial"
+        - font-size: 250px</code></pre>
+
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="row">
             <form class="col-6">
                 <label>Select your video (mp4)</label>
@@ -63,7 +110,7 @@
         <div class="video-container mt-3">
             <video width="100%" id="video" controls loop>
             </video>
-            <div class="overlay-desc">
+            <div id="overlay-area">
 
                 <!-- <div class="col-lg-4"><br></div>
             <div id="time" class="col-lg-4 var" style="text-align: right">Topic 3</div> -->
