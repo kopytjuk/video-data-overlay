@@ -7,8 +7,6 @@ var config = null
 $("#inputVideoFile").change(function () {
     video_file = this.files[0];
     $("#inputVideoFileName").html(video_file.name);
-    var fileURL = URL.createObjectURL(video_file);
-    $("#video").attr('src', fileURL);
 })
 
 $("#inputDataFile").change(function () {
@@ -60,6 +58,11 @@ function config_to_html(cfg) {
 };
 
 $("#startButton").click(function () {
+
+    $("#video-container").css("display", "block");
+
+    var fileURL = URL.createObjectURL(video_file);
+    $("#video").attr('src', fileURL);
 
     config_str_arr = config_to_html(config);
     for (i = 0; i < config_str_arr.length; i++){
