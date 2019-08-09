@@ -1,6 +1,6 @@
-# Video overlay
+# HTML video overlay
 
-Tool for rendering time dependent data on top of video (mp4) files.
+A small tool for rendering time dependent data on top of video (mp4) files.
 
 ![overview](docs/overview.png)
 
