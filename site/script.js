@@ -1,4 +1,8 @@
-console.log("Hello world!")
+/*
+MIT License
+
+Copyright (c) 2019 Marat Kopytjuk
+*/
 
 var video_file = null
 var data_file = null
@@ -29,21 +33,22 @@ $("#inputConfigFile").change(function () {
 })
 
 function config_to_html(cfg) {
+    // given a js-yaml parsed object cosntruct
+    // a div element based on the configuration
     str_arr = [];
     for (var key in cfg) {
 
         elem = cfg[key];
 
-        // write id
+        // write id, which will be referenced later for displaying data
         str_elem = '<div class="overlay-element" id="' + key + '"';
 
         if (elem["style"].length > 0) {
 
             str_elem += ' style="'
 
-            // iterate over style properties
+            // iterate over (CSS-)style properties
             for (var s in elem["style"]) {
-                //
                 s_val = elem["style"][s];
                 str_elem += Object.keys(s_val)[0] + ": " + s_val[Object.keys(s_val)[0]];
                 str_elem += ";";
@@ -59,43 +64,43 @@ function config_to_html(cfg) {
 
 $("#startButton").click(function () {
 
+    // show the video container first
     $("#video-container").css("display", "block");
 
+    // read local video file and display it
     var fileURL = URL.createObjectURL(video_file);
     $("#video").attr('src', fileURL);
 
+    // read config file
     config_str_arr = config_to_html(config);
     for (i = 0; i < config_str_arr.length; i++){
         $("#overlay-area").append(config_str_arr[i]);
     }
 
     var data_reader = new FileReader();
+    // after the data is loaded
     data_reader.onload = function () {
         //Txt file output
         var txtRes = data_reader.result;
-        // Init the "SSV" parser, which splits data on semi-colons
         var parser = d3.dsvFormat(';')
-        // data = parser.parse(txtRes, function (d) {
-        //     mapping = {time: +d.time}
-        //     for (var key in config) {
-        //         mapping[key] = +d[key]
-        //     }
-        //     return mapping
-        // })
 
         data = parser.parse(txtRes, function (d) {
-            mapping = {time: +d.time}
+            // time is converted to a float, because we need
+            // it later to synchronize video-time with the data
+            mapping_rule = {time: +d.time}
             for (var key in config) {
-                mapping[key] = d[key]
+                mapping_rule[key] = d[key]
             }
-            return mapping
+            return mapping_rule
         })
 
-        // fill data arrays
+        // create fields for time and data arrays in the window object
         window.data["time"] = []
         for (var key in config) {
             window.data[key] = []
         }
+
+        // fill the above mentioned arrays
         for (i = 0; i < data.length; i++) {
             window.data["time"].push(data[i].time)
             for (var key in config) {
@@ -106,20 +111,19 @@ $("#startButton").click(function () {
     };
     data_reader.readAsText(data_file);
 
-    //$("#overlay-area").append('<div id="var1" class="overlay-element" style="left: 50px; top: 100px"><br></div>');
-    //$("#overlay-area").append('<div id="var2" class="overlay-element" style="left: 50px"><br></div>');
+    // define a callback function for each 100ms
     function displayTime(event) {
         t = document.getElementById("video").currentTime
-  
+        
+        // find the closest index in the time array
         idx = d3.minIndex(window.data.time.map(x => Math.abs(x - t)));
+
+        // the index is used to select data values to show on the overlay
         for (var key in config) {
-            //console.log(key)
-            //console.log(window.data[key])
-            //$("#" + key).html("" + Number(window.data[""+key][idx]).toFixed(2));
             $("#" + key).html("" + window.data[""+key][idx]);
         }
       }
   
-      //document.getElementById("video").addEventListener("playing", displayTime);
-      window.setInterval(displayTime, 100)
+      // fired with 100Hz
+      window.setInterval(displayTime, 10)
 });
